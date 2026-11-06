@@ -1,3 +1,5 @@
 __pycache__/
 simulation/qca_sim
 .DS_Store
+simulation/qde_driver
+QCADesignerE_Diss.trace

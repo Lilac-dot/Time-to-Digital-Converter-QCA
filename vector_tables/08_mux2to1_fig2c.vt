@@ -1,0 +1,35 @@
+%%VECTOR TABLE%%
+# This is a vector table file.  All text beginning with a '#' and up to the
+# end of the line will be ignored.  The first vector is the list of active
+# inputs.  The inputs this vector table was constructed for are listed below
+# from Most Significant Bit to Least Significant Bit:
+# I0
+# S
+# I1
+# The following vector is the active input mask.
+111
+# Here are the vectors:
+000
+000
+000
+001
+001
+001
+100
+100
+100
+101
+101
+101
+010
+010
+010
+011
+011
+011
+110
+110
+110
+111
+111
+111
