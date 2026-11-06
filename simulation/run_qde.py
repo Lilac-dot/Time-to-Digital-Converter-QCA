@@ -53,7 +53,7 @@ def seq(name, f, inputs, out, steps, want):
 
 
 def edge():
-    p = os.path.join(LAY, "05_edge_converter.qca")
+    p = os.path.join(LAY, "../archive/05_edge_converter.qca")
     rows = [(0,)] * 6 + [(1,)] * 6 + [(0,)] * 6 + [(1,)] * 6
     c, e, _ = run_qde(p, ["CLK"], rows)
     pk = peak_per_period(c["t_ps"], c["EDGE"], n=len(rows))
@@ -99,11 +99,11 @@ def main():
         mux = lambda s, a, b: b if s else a
         blocks = [ex.submit(truth, "Majority gate", "01_majority_gate.qca", ["A", "B", "C"], "OUT", lambda a, b, c: int(a + b + c >= 2)),
                   ex.submit(wire),
-                  ex.submit(truth, "2:1 MUX, generated", "03_mux2to1.qca", ["S", "I0", "I1"], "OUT", mux),
+                  ex.submit(truth, "2:1 MUX, generated", "../archive/03_mux2to1.qca", ["S", "I0", "I1"], "OUT", mux),
                   ex.submit(truth, "2:1 MUX, paper Fig. 2(c)", "08_mux2to1_fig2c.qca", ["S", "I0", "I1"], "OUT", mux),
-                  ex.submit(seq, "D-latch, generated", "04_dlatch_mux.qca", ["CLK", "D"], "Q", LATCH, LATCH_Q),
-                  ex.submit(seq, "D-latch, hand-built", "../DFlipFlop", ["CLK", "D"], "OUT", LATCH, LATCH_Q),
-                  ex.submit(seq, "DFF, generated", "06_dff.qca", ["CLK", "D"], "Q", DFF, DFF_Q),
+                  ex.submit(seq, "D-latch, generated", "../archive/04_dlatch_mux.qca", ["CLK", "D"], "Q", LATCH, LATCH_Q),
+                  ex.submit(seq, "D-latch, hand-built", "DFlipFlop.qca", ["CLK", "D"], "OUT", LATCH, LATCH_Q),
+                  ex.submit(seq, "DFF, generated", "../archive/06_dff.qca", ["CLK", "D"], "Q", DFF, DFF_Q),
                   ex.submit(edge)]
         res = {"engine": "QCADesigner-E (FSillT/QCADesigner-E, master), coherence vector energy engine",
                "Ek_meV": Ek / 1.602176462e-19 * 1e3, "blocks": [b.result() for b in blocks],

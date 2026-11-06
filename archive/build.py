@@ -45,6 +45,10 @@ Majority gate at (c,r): device (c,r), terminals N(c,r-1) E(c+1,r) S(c,r+1)
 W(c-1,r). Rule of thumb kept here: cells of different nets stay >= 2 grid
 steps apart unless they are the 4 terminals of the same gate.
 """
+import os
+import sys
+
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "qca-layouts"))
 from qca_gen import Layout, PITCH
 
 P = PITCH

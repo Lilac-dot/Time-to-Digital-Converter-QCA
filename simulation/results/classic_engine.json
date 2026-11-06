@@ -1,0 +1,38 @@
+{
+ "Conventional TDC, r=65 nm": {
+  "codes": {
+   "0": "1000",
+   "1": "1100",
+   "2": "1110",
+   "3": "1111"
+  },
+  "ok": true
+ },
+ "Conventional TDC, r=80 nm": {
+  "codes": {
+   "0": "1000",
+   "1": "1100",
+   "2": "1110",
+   "3": "1111"
+  },
+  "ok": true
+ },
+ "MUX Fig. 2(c), r=65 nm": {
+  "ok": true
+ },
+ "Majority gate, r=65 nm": {
+  "ok": true
+ },
+ "D-latch, r=65 nm": {
+  "ok": true
+ },
+ "MUX Fig. 2(c), r=80 nm": {
+  "ok": true
+ },
+ "Majority gate, r=80 nm": {
+  "ok": true
+ },
+ "D-latch, r=80 nm": {
+  "ok": true
+ }
+}
