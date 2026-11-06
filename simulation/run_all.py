@@ -21,7 +21,7 @@ RES = os.path.join(HERE, "results")
 os.makedirs(RES, exist_ok=True)
 TMP = tempfile.mkdtemp()
 CONV = os.path.join(LAY, "07_conventional_tdc.qca")
-FINAL = os.path.join(ROOT, "TDC-final")
+FINAL = os.path.join(ROOT, "archive", "TDC-final.qca")
 OUTS = ["OUT0", "OUT1", "OUT2", "OUT3"]
 EXPECT = {0: "1000", 1: "1100", 2: "1110", 3: "1111"}
 EV = 1.602176462e-19
@@ -116,7 +116,7 @@ def main():
     blocks = []
     for name, f, inp, o, fn in [
         ("Majority gate", "01_majority_gate.qca", ["A", "B", "C"], "OUT", lambda a, b, c: int(a + b + c >= 2)),
-        ("2:1 MUX, generated", "03_mux2to1.qca", ["S", "I0", "I1"], "OUT", lambda s, a, b: b if s else a),
+        ("2:1 MUX, generated", "../archive/03_mux2to1.qca", ["S", "I0", "I1"], "OUT", lambda s, a, b: b if s else a),
         ("2:1 MUX, paper Fig. 2(c)", "08_mux2to1_fig2c.qca", ["S", "I0", "I1"], "OUT", lambda s, a, b: b if s else a),
     ]:
         p = os.path.join(LAY, f)
@@ -131,16 +131,16 @@ def main():
     ok = list(w) == [False, False, True, True] and list(i) == [True, False, True, False]
     blocks.append(block_row("Wire + inverter", "02_wire_inverter.qca", cells, ok, pre))
     for name, f, inp, o, seq, want in [
-        ("D-latch, generated", "04_dlatch_mux.qca", ["CLK", "D"], "Q", LATCH, LATCH_Q),
-        ("D-latch, hand-built", "../DFlipFlop", ["CLK", "D"], "OUT", LATCH, LATCH_Q),
-        ("DFF, generated", "06_dff.qca", ["CLK", "D"], "Q", DFF, DFF_Q),
+        ("D-latch, generated", "../archive/04_dlatch_mux.qca", ["CLK", "D"], "Q", LATCH, LATCH_Q),
+        ("D-latch, hand-built", "DFlipFlop.qca", ["CLK", "D"], "OUT", LATCH, LATCH_Q),
+        ("DFF, generated", "../archive/06_dff.qca", ["CLK", "D"], "Q", DFF, DFF_Q),
     ]:
         p = os.path.join(LAY, f)
         ok, pre = seq_test(p, inp, o, seq, want)
-        blocks.append(block_row(name, f.replace("../", ""), parse_qca(p), ok, pre))
-    p = os.path.join(LAY, "05_edge_converter.qca")
+        blocks.append(block_row(name, f, parse_qca(p), ok, pre))
+    p = os.path.join(LAY, "../archive/05_edge_converter.qca")
     ok, pre = edge_test(p)
-    blocks.append(block_row("Edge converter, generated", "05_edge_converter.qca", parse_qca(p), ok, pre))
+    blocks.append(block_row("Edge converter, generated", "../archive/05_edge_converter.qca", parse_qca(p), ok, pre))
     out["blocks"] = blocks
 
     # ---- conventional TDC

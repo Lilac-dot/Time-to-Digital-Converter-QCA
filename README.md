@@ -3,9 +3,8 @@ Reproduction and implementation of a low-power Time-to-Digital Converter (TDC) u
 
 | Path | What |
 |---|---|
-| `qca-layouts/07_conventional_tdc.qca` | Conventional TDC (paper Fig. 1b): 256 cells |
-| `qca-layouts/08_mux2to1_fig2c.qca` | 2:1 MUX (paper Fig. 2c): 12 cells |
-| `DFlipFlop` | Hand-built MUX-based D-latch: 22 cells |
-| `TDC-final` | Hand-built proposed TDC (paper Fig. 3b): 187 cells + 1 stray |
-| `qca-layouts/` | Other blocks and the Python generators |
-| `simulation/` | Solver, test script, energy results: start at `simulation/RESULTS.md` |
+| `qca-layouts/07_conventional_tdc.qca` | Working conventional TDC (paper Fig. 1b): 256 cells |
+| `qca-layouts/` | Other working blocks, including the MUX and D-latch |
+| `vector_tables/` | Vector tables and steps for running them in QCADesigner |
+| `simulation/RESULTS.md` | Test results and QCADesigner-E energy numbers |
+| `archive/` | Layouts that do not work, including the proposed TDC |
