@@ -1,0 +1,324 @@
+[
+ {
+  "setting": "classic r=65",
+  "T": 6,
+  "code": "0000",
+  "lat_ps": [
+   12.1,
+   12.0,
+   12.0
+  ],
+  "E_bath_meV": null,
+  "E_err_meV": null
+ },
+ {
+  "setting": "classic r=65",
+  "T": 7,
+  "code": "1000",
+  "lat_ps": [
+   12.0,
+   12.0,
+   12.1
+  ],
+  "E_bath_meV": null,
+  "E_err_meV": null
+ },
+ {
+  "setting": "classic r=65",
+  "T": 8,
+  "code": "1100",
+  "lat_ps": [
+   12.1,
+   12.0,
+   12.0
+  ],
+  "E_bath_meV": null,
+  "E_err_meV": null
+ },
+ {
+  "setting": "classic r=65",
+  "T": 9,
+  "code": "1110",
+  "lat_ps": [
+   12.1,
+   12.1,
+   12.0
+  ],
+  "E_bath_meV": null,
+  "E_err_meV": null
+ },
+ {
+  "setting": "classic r=65",
+  "T": 10,
+  "code": "1111",
+  "lat_ps": [
+   12.1,
+   12.0,
+   12.0
+  ],
+  "E_bath_meV": null,
+  "E_err_meV": null
+ },
+ {
+  "setting": "classic r=80",
+  "T": 6,
+  "code": "0000",
+  "lat_ps": [
+   12.1,
+   12.0,
+   12.0
+  ],
+  "E_bath_meV": null,
+  "E_err_meV": null
+ },
+ {
+  "setting": "classic r=80",
+  "T": 7,
+  "code": "1000",
+  "lat_ps": [
+   12.0,
+   12.0,
+   12.1
+  ],
+  "E_bath_meV": null,
+  "E_err_meV": null
+ },
+ {
+  "setting": "classic r=80",
+  "T": 8,
+  "code": "1100",
+  "lat_ps": [
+   12.1,
+   12.0,
+   12.0
+  ],
+  "E_bath_meV": null,
+  "E_err_meV": null
+ },
+ {
+  "setting": "classic r=80",
+  "T": 9,
+  "code": "1110",
+  "lat_ps": [
+   12.1,
+   12.1,
+   12.0
+  ],
+  "E_bath_meV": null,
+  "E_err_meV": null
+ },
+ {
+  "setting": "classic r=80",
+  "T": 10,
+  "code": "1111",
+  "lat_ps": [
+   12.1,
+   12.0,
+   12.0
+  ],
+  "E_bath_meV": null,
+  "E_err_meV": null
+ },
+ {
+  "setting": "Gaussian r=80",
+  "T": 6,
+  "code": "1000",
+  "lat_ps": [
+   17.6,
+   17.6,
+   17.6
+  ],
+  "E_bath_meV": 19.1,
+  "E_err_meV": 1.53
+ },
+ {
+  "setting": "Gaussian r=80",
+  "T": 7,
+  "code": "1100",
+  "lat_ps": [
+   17.6,
+   17.6,
+   17.5
+  ],
+  "E_bath_meV": 18.8,
+  "E_err_meV": 1.5
+ },
+ {
+  "setting": "Gaussian r=80",
+  "T": 8,
+  "code": "1110",
+  "lat_ps": [
+   17.5,
+   17.6,
+   17.5
+  ],
+  "E_bath_meV": 18.4,
+  "E_err_meV": 1.46
+ },
+ {
+  "setting": "Gaussian r=80",
+  "T": 9,
+  "code": "1111",
+  "lat_ps": [
+   17.6,
+   17.6,
+   17.5
+  ],
+  "E_bath_meV": 18.0,
+  "E_err_meV": 1.41
+ },
+ {
+  "setting": "Gaussian r=80",
+  "T": 10,
+  "code": "1111",
+  "lat_ps": [
+   13.6,
+   13.5,
+   13.5
+  ],
+  "E_bath_meV": 18.0,
+  "E_err_meV": 1.41
+ },
+ {
+  "setting": "Gaussian r=65",
+  "T": 6,
+  "code": "1000",
+  "lat_ps": [
+   17.6,
+   17.6,
+   17.6
+  ],
+  "E_bath_meV": 18.9,
+  "E_err_meV": 1.51
+ },
+ {
+  "setting": "Gaussian r=65",
+  "T": 7,
+  "code": "1100",
+  "lat_ps": [
+   17.6,
+   17.6,
+   17.5
+  ],
+  "E_bath_meV": 18.7,
+  "E_err_meV": 1.48
+ },
+ {
+  "setting": "Gaussian r=65",
+  "T": 8,
+  "code": "1110",
+  "lat_ps": [
+   17.5,
+   17.6,
+   17.5
+  ],
+  "E_bath_meV": 18.3,
+  "E_err_meV": 1.44
+ },
+ {
+  "setting": "Gaussian r=65",
+  "T": 9,
+  "code": "1111",
+  "lat_ps": [
+   17.6,
+   17.6,
+   17.5
+  ],
+  "E_bath_meV": 17.9,
+  "E_err_meV": 1.4
+ },
+ {
+  "setting": "Gaussian r=65",
+  "T": 10,
+  "code": "1111",
+  "lat_ps": [
+   13.6,
+   13.5,
+   13.5
+  ],
+  "E_bath_meV": 17.9,
+  "E_err_meV": 1.4
+ },
+ {
+  "setting": "classic r=65",
+  "steps": [
+   {
+    "T": 7,
+    "code": "1000",
+    "lat_ps": [
+     12.2,
+     12.2,
+     12.2
+    ]
+   },
+   {
+    "T": 10,
+    "code": "1110",
+    "lat_ps": [
+     8.1,
+     8.4,
+     8.1
+    ]
+   },
+   {
+    "T": 6,
+    "code": "0000",
+    "lat_ps": [
+     12.1,
+     12.1,
+     12.2
+    ]
+   },
+   {
+    "T": 9,
+    "code": "1100",
+    "lat_ps": [
+     8.3,
+     8.2,
+     8.0
+    ]
+   }
+  ]
+ },
+ {
+  "setting": "Gaussian r=80",
+  "steps": [
+   {
+    "T": 7,
+    "code": "1100",
+    "lat_ps": [
+     17.9,
+     17.9,
+     17.9
+    ]
+   },
+   {
+    "T": 10,
+    "code": "1110",
+    "lat_ps": [
+     9.9,
+     9.7,
+     9.9
+    ]
+   },
+   {
+    "T": 6,
+    "code": "0000",
+    "lat_ps": [
+     13.8,
+     13.9,
+     13.9
+    ]
+   },
+   {
+    "T": 9,
+    "code": "1100",
+    "lat_ps": [
+     9.6,
+     9.5,
+     9.8
+    ]
+   }
+  ]
+ }
+]

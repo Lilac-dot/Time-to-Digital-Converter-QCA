@@ -1,0 +1,114 @@
+[
+ {
+  "setting": "classic r=65",
+  "steps": [
+   {
+    "T": 5,
+    "code": "1100",
+    "lat_ps": [
+     20.1,
+     0.1,
+     4.1
+    ]
+   }
+  ]
+ },
+ {
+  "setting": "classic r=65",
+  "steps": [
+   {
+    "T": 6,
+    "code": "1110",
+    "lat_ps": [
+     16.1,
+     24.1,
+     0.1
+    ]
+   }
+  ]
+ },
+ {
+  "setting": "classic r=65",
+  "steps": [
+   {
+    "T": 7,
+    "code": "1111",
+    "lat_ps": [
+     16.2,
+     24.2,
+     24.1
+    ]
+   }
+  ]
+ },
+ {
+  "setting": "classic r=65",
+  "steps": [
+   {
+    "T": 8,
+    "code": "1111",
+    "lat_ps": [
+     16.2,
+     20.2,
+     20.2
+    ]
+   }
+  ]
+ },
+ {
+  "setting": "classic r=65",
+  "steps": [
+   {
+    "T": 9,
+    "code": "1111",
+    "lat_ps": [
+     12.2,
+     16.2,
+     16.1
+    ]
+   }
+  ]
+ },
+ {
+  "setting": "classic r=65",
+  "steps": [
+   {
+    "T": 10,
+    "code": "1111",
+    "lat_ps": [
+     12.1,
+     12.2,
+     12.2
+    ]
+   }
+  ]
+ },
+ {
+  "setting": "classic r=65",
+  "steps": [
+   {
+    "T": 11,
+    "code": "1111",
+    "lat_ps": [
+     8.2,
+     8.1,
+     8.2
+    ]
+   }
+  ]
+ },
+ {
+  "setting": "classic r=65",
+  "steps": [
+   {
+    "T": 12,
+    "code": "1111",
+    "lat_ps": [
+     4.2,
+     4.2,
+     4.2
+    ]
+   }
+  ]
+ }
+]
