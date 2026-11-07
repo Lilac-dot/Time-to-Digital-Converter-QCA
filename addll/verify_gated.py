@@ -47,9 +47,10 @@ def run(j):
     print(json.dumps(o), flush=True)
     return o
 
-jobs = [("classic r=65", (T,)) for T in (3, 4, 5, 6, 7, 8)] + [("classic r=65", (6, 7, 5, 4, 7))]
-jobs += [("classic r=80", (T,)) for T in (4, 5, 6, 7)] + [("Gaussian r=80", (T,)) for T in (4, 5, 6, 7)]
-jobs += [("Gaussian r=65", (T,)) for T in (4, 7)] + [("Gaussian r=80", (6, 7, 5, 4, 7))]
-with ThreadPoolExecutor(9) as ex:
-    res = list(ex.map(run, jobs))
-json.dump(res, open("gated_verify.json", "w"), indent=1)
+if __name__ == "__main__":
+    jobs = [("classic r=65", (T,)) for T in (3, 4, 5, 6, 7, 8)] + [("classic r=65", (6, 7, 5, 4, 7))]
+    jobs += [("classic r=80", (T,)) for T in (4, 5, 6, 7)] + [("Gaussian r=80", (T,)) for T in (4, 5, 6, 7)]
+    jobs += [("Gaussian r=65", (T,)) for T in (4, 7)] + [("Gaussian r=80", (6, 7, 5, 4, 7))]
+    with ThreadPoolExecutor(9) as ex:
+        res = list(ex.map(run, jobs))
+    json.dump(res, open("gated_verify.json", "w"), indent=1)
