@@ -18,6 +18,12 @@ and in Test 2 only OUT2 ever read 1. The screenshots are `test1_output.png` and
 tests (a three-layer crossing, the delay line alone, and the ADDLL with EN held on) that
 show where the signal stops.
 
+**Test 2 can't be read past about 41% in the Windows GUI anyway:** its 510 vectors overflow
+the engine's vector index (see `simulation/README.md`), so the inputs replay from the start
+after about 840 ps. Test 1 (104 vectors) is not affected. A replay of Test 1 with Total
+Simulation Time entered as `4.16e-11` instead of `4.16e-10` gives the same failure as the GUI
+run (DOUT never high, only OUT2 ever 1), so check that value first.
+
 The command-line results below come from the same engine source but have not been reproduced in
 the GUI, so treat them as unconfirmed.
 

@@ -34,7 +34,7 @@
 extern coherence_energy_OP coherence_energy_options;
 extern coherence_OP coherence_options;
 
-#define MAXIN 8
+#define MAXIN 32
 
 int main(int argc, char **argv)
 {
