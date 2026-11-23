@@ -1,0 +1,5 @@
+cells 413 area_um2 0.7716
+energy 11.40 meV/cycle (error +/- 0.98)
+s=0 D= 9: count= 2 F_S=000 F_P=011 Q= 10 Q-D=1
+s=1 D= 9: count= 3 F_S=011 F_P=000 Q= 10 Q-D=1
+s=2 D= 9: count= 2 F_S=001 F_P=111 Q= 10 Q-D=1

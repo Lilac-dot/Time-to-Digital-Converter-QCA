@@ -22,3 +22,18 @@ Defaults: T = 1 K, relaxation 1e-15 s, time step 1e-16 s, clock 4 ps, clock high
 
 QCADesigner-E: F. Sill Torres, R. Wille, P. Niemann, R. Drechsler, IEEE TCAD 37(12), 2018.
 QCADesigner: K. Walus et al., IEEE Trans. Nanotechnology 3, 2004.
+
+## Long vector tables: engine overflow
+
+The classic coherence-vector engine picks the current input vector with
+`(j * vectors) / samples`, where `j` is a 32-bit `int` (`coherence_vector.c`, line 350 in
+QCADesigner-E; the same code is in QCADesigner 2.0.3). At 40,000 samples per vector (4 ps
+clock, 1e-16 s step), the product overflows:
+
+- 64-bit build (this driver): past 2^31, at about 231 vectors. The run segfaults.
+- 32-bit Windows QCADesigner 2.0.3: past 2^32, at about 327 vectors. The inputs silently
+  restart from vector 0 partway through the run.
+
+For long runs here, patch that line to
+`((unsigned long long)j * pvt->vectors->icUsed) / number_samples` before building. In the
+GUI, keep a vector table under about 320 vectors at this clock, or split the test.
