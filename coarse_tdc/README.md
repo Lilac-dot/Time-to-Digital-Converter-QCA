@@ -11,7 +11,7 @@ edges that arrive at any time, and clears itself between events.
 | `async_tdc4.qca` coarse + fine | 413 | 0.77 um² | 60 ps | **1 ps** | exact for all 16 START/STOP phase pairs |
 | `async_tdc8.qca` coarse + fine | 641 | 1.76 um² | 1.02 ns | **1 ps** | exact (D = 601 and 258 quarters) |
 | `rearm_tdc4.qca` self-re-arming channel | 738 | 1.38 um² | 60 ps | 1 ps | 3 back-to-back events exact, 68 ps dead time |
-| `rearm_2ch.qca` two channels, one clock | 1476 | 2.87 um² | 60 ps | 1 ps | simulation running; result in the next commit |
+| `rearm_2ch.qca` two channels, one clock | 1476 | 2.87 um² | 60 ps | 1 ps | both channels exact, independent |
 
 All results come from the QCADesigner-E simulation engine (Torres et al., IEEE TCAD 2018,
 built on QCADesigner 2.0.3), compiled from source and driven from the command line
@@ -167,7 +167,17 @@ counter instead of running out to the side: 768 → 738 cells, 2.24 → 1.38 um�
 `test_2ch.py` places two self-re-arming channels side by side. They share only the clock;
 each has its own START, STOP, RST, VALID and clear network.
 
-*Result pending: the two-channel simulation (1476 cells) is still running and will be added in the next commit.*
+Each channel gets its own START phase and interval. Both read correctly, and neither
+disturbs the other:
+
+| Channel / event (`test_2ch.py`, Gaussian clock, r = 80 nm) | count | F_S | F_P | Q | Q − D | dead time |
+|---|---|---|---|---|---|---|
+| A: START at quarter 1, D = 9 | 3 | 001 | 011 | 13 | 4 | 68.2 ps |
+| A: START at quarter 2, D = 30 | 9 | 011 | 000 | 34 | 4 | 70.2 ps |
+| B: START at quarter 3, D = 17 | 6 | 111 | 000 | 21 | 4 | 70.2 ps |
+| B: START at quarter 0, D = 6 | 2 | 000 | 011 | 10 | 4 | 68.2 ps |
+
+Energy: 40.5 meV per cycle (+/- 3.39) for both channels, about twice one channel (20.0).
 
 ## Why: single-photon timing for biomedical imaging
 
