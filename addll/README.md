@@ -11,15 +11,22 @@ QCADesigner-E engine source run from the command line.
 
 ## For GUI testing
 
-Download `addll_gated_gui_test.zip` first and follow the `README.md` inside it. That is the
-main version. `addll_gui_test.zip` is the older, smaller version.
+**`addll_gated.qca` failed in the GUI (2026-11-23).** In both tests of `gui_test_gated/`, DOUT
+never went high (peak +0.04) and the codes did not match: Test 1 ended at 0000 instead of 1110,
+and in Test 2 only OUT2 ever read 1. The screenshots are `test1_output.png` and
+`test2_output.png` on `main`. The cause is not known yet. Run `gui_diag/` next: three short
+tests (a three-layer crossing, the delay line alone, and the ADDLL with EN held on) that
+show where the signal stops.
+
+The command-line results below come from the same engine source but have not been reproduced in
+the GUI, so treat them as unconfirmed.
 
 ## Layouts
 
 | File | What | Cells | Status |
 |---|---|---|---|
 | `addll.qca` | Full ADDLL; needs a clear pulse and flush before each measurement | 749 | Passes in the classic engine at 65 nm (see below) |
-| `addll_comp.qca` | Gated ADDLL with START delayed 24 ps so DOUT lands one REF period after REF | 1037 | Passes in the classic engine at 65 nm; full check pending |
+| `addll_comp.qca` | Gated ADDLL with START delayed 24 ps so DOUT lands one REF period after REF | 1037 | Passes the strict check in the classic engine at 65 nm; other settings not run; not tested in the GUI |
 | `addll_gated.qca` | Gated selects, no clear pulse needed; DOUT is 24 ps late (see below) | 971 | Codes pass in 4 engine settings |
 | `delay_line.qca` | Four switchable delay stages | 277 | Passes in 4 engine settings |
 | `stage.qca` | One switchable delay stage | 64 | Passes in 4 engine settings |
@@ -34,8 +41,26 @@ tap to cancel it. The code becomes k = T - 9 stages, where T is the REF period i
 and DOUT lands one REF period after REF to within 0.2 ps for T = 9 to 13 (classic engine,
 65 nm radius). Area is 1.37 um^2.
 
-`verify_comp.py` runs the full set: the period sweep in four engine settings and recalibration
-in one run. Its results are not in yet, so treat this layout as checked in one setting only.
+`verify_comp_abs.py` checks absolute DOUT delay (from an isolated REF pulse after
+calibration, not modulo the REF period) and the exact thermometer pattern. Results so far, classic
+engine at 65 nm only (`verify_comp_abs_fast.log`):
+
+| T (clock periods) | Code | DOUT delay | Target 4T | Error | Result |
+|---|---|---|---|---|---|
+| 8 | 0000 | 36.0 ps | 32 ps | +4.0 ps | Out of range (saturated) |
+| 9 | 0000 | 36.1 ps | 36 ps | +0.1 ps | Pass |
+| 10 | 1000 | 40.2 ps | 40 ps | +0.2 ps | Pass |
+| 11 | 1100 | 44.2 ps | 44 ps | +0.2 ps | Pass |
+| 12 | 1110 | 48.1 ps | 48 ps | +0.1 ps | Pass |
+| 13 | 1111 | 52.2 ps | 52 ps | +0.2 ps | Pass |
+| 14 | 1111 | 52.2 ps | 56 ps | -3.8 ps | Out of range (saturated) |
+
+In every run the code held after the isolated pulse, exactly one DOUT pulse followed it, no
+stray DOUT pulse appeared in the quiet gap, and the measuring REF edge saw the 36 ps bypass delay.
+The other engine settings, recalibration sequences, EN timing and probe runs were stopped
+before finishing. An earlier run at 80 nm radius (classic engine) showed no DOUT pulse at T = 9;
+the new START wire passes about two cell pitches from a fixed cell of the first stage's MUX,
+which may be the cause. Not yet confirmed.
 
 ## `addll_gated.qca`
 
@@ -83,4 +108,6 @@ a stale start-up code, so their lock range is wrong. They are kept as a record.
 
 `build_addll.py`, `build_addll_gated.py` and `build_addll_comp.py` generate the layouts. They need
 `../qca-layouts/` and, for simulation, the compiled driver from `../simulation/`.
-`preclear_sweep.py`, `verify_gated.py` and `verify_comp.py` run the main checks.
+`preclear_sweep.py`, `verify_gated.py` and `verify_comp_abs.py` run the main checks.
+`build_comp_probe.py` makes a copy of `addll_comp.qca` with internal probe outputs (ENB, Q and
+select of each stage, and START). `make_gui_diag.py` builds `gui_diag/`.
