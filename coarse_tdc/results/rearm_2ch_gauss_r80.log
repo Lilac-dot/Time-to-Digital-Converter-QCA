@@ -1,0 +1,6 @@
+cells 1476 area_um2 2.8732
+energy 40.50 meV/cycle (error +/- 3.39)
+ch A event 0: s=1 D= 9 Q=13 Q-D=4  count=3 F_S=001 F_P=011 valid@144ps (STOP@122ps) dead=68.2ps
+ch A event 1: s=2 D=30 Q=34 Q-D=4  count=9 F_S=011 F_P=000 valid@300ps (STOP@276ps) dead=70.2ps
+ch B event 0: s=3 D=17 Q=21 Q-D=4  count=6 F_S=111 F_P=000 valid@156ps (STOP@132ps) dead=70.2ps
+ch B event 1: s=0 D= 6 Q=10 Q-D=4  count=2 F_S=000 F_P=011 valid@272ps (STOP@250ps) dead=68.2ps
