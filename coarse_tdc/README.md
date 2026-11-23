@@ -4,7 +4,7 @@ The delay-line TDCs in this repo cover only 4 clock periods (16 ps at a 4 ps clo
 jobs like time-of-flight imaging need nanosecond ranges, so this folder adds the usual
 fix: a **coarse counter** that counts whole clock periods between START and STOP.
 
-- **Range:** 2^n periods. 4 bits = 0-15 periods (60 ps); 8 bits = 0-255 periods (1.02 ns).
+- **Range:** 2^n periods. 4 bits = 0-15 periods (60 ps, 245 cells); 8 bits = 0-255 periods (1.02 ns, 473 cells).
 - **Resolution:** one clock period (4 ps).
 - **Single layer:** no crossings or vias, so it doesn't depend on how a tool handles
   multilayer files.
@@ -19,8 +19,9 @@ source run from the command line.
 - **Toggle bit:** the MUX is closed into a one-period loop, `X' = S ? !X : X`. The I1
   branch feeds back `!X` through an inverting diagonal placed on a clock-zone boundary. The
   counted bit is `b = !X`.
-- **Carry:** `carry = S . b` (b before the update), from a separate majority gate. It
-  reaches the next bit's S line a few periods later. A ripple counter only needs every carry
+- **Carry:** `carry = S . b` (b before the update), from a separate majority gate. Bits
+  are stacked downwards (each 12 rows below and 2 columns east of the last), so the carry
+  drops straight down a 7-cell wire into the next bit's S line about one period later. A ripple counter only needs every carry
   to arrive, not to arrive in the same period, so the count is exact once the carries settle.
 - **Window:** `EN = START . !STOP` feeds the LSB. START and STOP are level steps: each
   rises and then holds until the clear.
@@ -29,7 +30,7 @@ source run from the command line.
   driven together. On a real chip they would be one net.
 
 **Reading the count:** `b_k = 1` when output `Xk` is negative; count = sum of `b_k * 2^k`.
-Read after the carries settle: 18 periods after STOP is enough for 4 bits, 40 for 8.
+Read after the carries settle: 18 periods after STOP is enough for 4 bits, 30 for 8.
 
 ## Results
 
@@ -37,10 +38,24 @@ The STOP edge comes N periods after START; the count read back should equal N.
 
 | Layout | Engine | N tested | Result |
 |---|---|---|---|
-| `coarse_tdc4.qca` (328 cells, 0.48 um^2) | classic, r = 65 nm | 0, 3, 9, 14, 7, 15 | all exact |
+| `coarse_tdc4.qca` (245 cells, 0.38 um^2) | classic, r = 65 nm | 0, 3, 9, 14, 7, 15 | all exact |
 | `coarse_tdc4.qca` | classic, r = 80 nm | 0, 3, 9, 14, 7, 15 | all exact |
-| `coarse_tdc4.qca` | Gaussian clock (energy), r = 80 nm | 0, 3, 9, 14, 7, 15 | all exact; 7.70 meV per cycle (error +/- 0.60) |
-| `coarse_tdc8.qca` (664 cells, 0.98 um^2) | classic, r = 65 nm | 200, 77 | both exact (engine overflow patched, see `../simulation/README.md`) |
+| `coarse_tdc4.qca` | Gaussian clock (energy), r = 80 nm | 0, 3, 9, 14, 7, 15 | all exact; 6.69 meV per cycle (error +/- 0.56) |
+| `coarse_tdc8.qca` (473 cells, 1.05 um^2) | classic, r = 65 nm | 200, 77 | both exact (engine overflow patched, see `../simulation/README.md`) |
+
+Version 1 of this design (first commit on this branch) chained the bits side by side with
+the carries looping over the top: 328 cells / 7.70 meV per cycle for 4 bits and 664 cells
+for 8. It passed the same tests. Stacking the bits removed most of the carry wiring.
+
+### Against published QCA counters
+
+The counter alone (no window gate) is 221 cells for 4 bits. A published 4-bit asynchronous
+QCA counter built from D-latches is 207 cells and 0.22 um^2 (Gholami group, Eur. Phys. J.
+Plus, 2024). This one is about 7% larger. In its favour:
+
+- It has a clear and a START/STOP window.
+- It's one layer.
+- It passes at two radii and under a Gaussian clock.
 
 Logs: `results/`. Without the window gate (EN driven directly), the 4-bit counter also
 counted 5, 11, 15 and 6 exactly.

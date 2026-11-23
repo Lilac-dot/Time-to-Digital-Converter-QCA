@@ -52,20 +52,20 @@ def toggle_bit(L, R, C, z, k):
     run(L, [(R + 3, C)], [p])
     # (R+2, C) and (R+1, C) are the MUX's I1 cells (zone p), already placed by mux()
 
-    # S line: from the east along row R-2 into the MUX's S cell (R-2, C)
-    sl = [(R - 2, c) for c in range(C + 1, C + 6)]
+    # S line along row R-2 into the MUX's S cell (R-2, C); fed at its east corner (R-2, C+4)
+    sl = [(R - 2, c) for c in range(C + 1, C + 5)]
     run(L, sl, [p] * len(sl))
-    # carry gate at (R+4, C+5): N = S line down column C+5, W = b continuing east along
+    # carry gate at (R+4, C+4): N = S line down column C+4, W = b continuing east along
     # row R+4 past the corner at (R+4, C), S = fixed -1 through a buffer, out E
-    down_s = [(r, C + 5) for r in range(R - 1, R + 4)]
+    down_s = [(r, C + 4) for r in range(R - 1, R + 4)]
     run(L, down_s, [p] * len(down_s))
-    tap = [(R + 4, c) for c in range(C + 1, C + 5)]
+    tap = [(R + 4, c) for c in range(C + 1, C + 4)]
     run(L, tap, [p] * len(tap))
-    L.add(R + 4, C + 5, z)
-    L.add(R + 5, C + 5, p)
-    L.add(R + 6, C + 5, p, "fixed", pol=-1)
-    return {"s_feed": (R - 2, C + 6), "s_zone": p,
-            "carry": (R + 4, C + 6), "carry_zone": y, "x": (R - 2, C - 6)}
+    L.add(R + 4, C + 4, z)
+    L.add(R + 5, C + 4, p)
+    L.add(R + 6, C + 4, p, "fixed", pol=-1)
+    return {"s_feed": (R - 3, C + 4), "s_zone": p,
+            "carry": (R + 4, C + 5), "carry_zone": y, "x": (R - 2, C - 6)}
 
 
 def line(a, b):
@@ -76,38 +76,36 @@ def line(a, b):
     return out
 
 
-def counter(L, R, C0, n, z=0, pitch=15):
-    """n toggle bits, LSB west, each fed from the north by the previous bit's carry, which
-    climbs column C+7 to row R-8 and runs east. Returns the LSB's S feed (driven from the
-    east, zone p), the final carry cell and zone, and the bit list."""
+def counter(L, R, C0, n, z=0, dr=12, dc=2):
+    """n toggle bits stacked downwards, LSB on top. Bit k+1 sits dr rows below and dc
+    columns east of bit k, so bit k's carry drops straight down column C+6 into bit k+1's
+    S line corner. Returns the bit list."""
     from addll_lib import zones
-    bits = [toggle_bit(L, R, C0 + i * pitch, z, i) for i in range(n)]
+    bits = [toggle_bit(L, R + i * dr, C0 + i * dc, z, i) for i in range(n)]
     for i in range(n - 1):
-        C, Cn = C0 + i * pitch, C0 + (i + 1) * pitch
-        b = bits[i]
-        path = [b["carry"]] + line((R + 4, C + 7), (R - 8, C + 7))[0:]
-        path += line((R - 8, C + 8), (R - 8, Cn + 5)) + line((R - 7, Cn + 5), (R - 3, Cn + 5))
-        zs = zones(len(path) - 1, b["carry_zone"], bits[i + 1]["s_zone"])
-        L.add(*b["carry"], b["carry_zone"])
-        run(L, path[1:], zs)
+        b, nb = bits[i], bits[i + 1]
+        r, c = b["carry"]
+        L.add(r, c, b["carry_zone"])
+        path = [(r, c + 1)] + line((r + 1, c + 1), nb["s_feed"])
+        assert path[-1][1] == c + 1, "carry column must meet the next S corner"
+        run(L, path, zones(len(path), b["carry_zone"], nb["s_zone"]))
     return bits
 
 
 def window(L, bit0, R, C):
-    """EN = START . !STOP, fed into the LSB's S line from the north at (R-3, C+3).
-    Gate at (R-10, C+3); START from the west, STOP from the north through an inverting
+    """EN = START . !STOP, fed into the LSB's S line from the north at (R-3, C+2).
+    Gate at (R-10, C+2); START from the west, STOP from the north through an inverting
     diagonal on a zone boundary, fixed -1 above. Rows above R-8 are clear of carry routes."""
     from addll_lib import zones
-    gr, gc = R - 10, C + 3
+    gr, gc = R - 10, C + 2
     p = bit0["s_zone"]
-    # main branch down column C+3 into the S line; fork at (R-7, C+3) one zone before p
-    # so the carry gate gets its own branch down column C+5 (a T inside zone p is weak)
-    for q in [(R - 2, C + 4), (R - 2, C + 5)]:
-        L.layers[0].pop(q, None)
+    # main branch down column C+2 into the S line; fork at (R-7, C+2) one zone before p so
+    # the carry gate gets its own branch down column C+4 (a T inside zone p is weak)
+    L.layers[0].pop((R - 2, C + 3), None)
     run(L, line((gr + 1, gc), (R - 7, gc)), [(p - 1) % 4] * 3)
     run(L, line((R - 6, gc), (R - 3, gc)), [p] * 4)
     run(L, [(R - 7, gc + 1), (R - 7, gc + 2), (R - 6, gc + 2), (R - 5, gc + 2)], [(p - 1) % 4] * 4)
-    run(L, line((R - 4, gc + 2), (R - 2, gc + 2)), [p] * 3)
+    run(L, [(R - 4, gc + 2), (R - 3, gc + 2)], [p] * 2)
     L.add(gr, gc, 1)
     L.add(gr - 1, gc, 0)
     L.add(gr - 2, gc, 0, "fixed", pol=-1)

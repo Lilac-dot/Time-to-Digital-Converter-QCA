@@ -1,4 +1,4 @@
-cells 328 area_um2 0.4757
+cells 245 area_um2 0.3846
 N= 0 read= 0 bits(b3..b0)=0000 peaks=[0.92, 0.92, 0.92, 0.92]
 N= 3 read= 3 bits(b3..b0)=0011 peaks=[-0.92, -0.92, 0.92, 0.92]
 N= 9 read= 9 bits(b3..b0)=1001 peaks=[-0.92, 0.92, 0.92, -0.92]
