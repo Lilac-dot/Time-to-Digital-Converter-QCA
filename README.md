@@ -21,6 +21,21 @@ Simulation of `vector_tables/07_conventional_tdc.vt`. OUT0 to OUT3 read 1000, 11
 
 ![Conventional TDC simulation in QCADesigner](screenshots/gui_vector_table.png)
 
+## Extension: wide-range asynchronous TDC
+
+Beyond the replication, [`coarse_tdc/`](coarse_tdc/README.md) builds a QCA TDC aimed at
+single-photon timing:
+
+- a coarse counter (up to 1.02 ns range);
+- quarter-period fine capture of edges that arrive at any time (1 ps steps, exact for all
+  16 START/STOP phase pairs);
+- self-re-arming channels with a VALID strobe and internal clear (68 ps dead time);
+- a two-channel layout on one clock.
+
+It's single-layer, verified in the QCADesigner-E engine, and works up to 2 K.
+
+![Asynchronous coarse + fine TDC](coarse_tdc/figures/layout_async_tdc4.png)
+
 ## Repo
 
 | Path | What |
@@ -30,5 +45,5 @@ Simulation of `vector_tables/07_conventional_tdc.vt`. OUT0 to OUT3 read 1000, 11
 | `vector_tables/` | Vector tables and steps for running them in QCADesigner |
 | `screenshots/` | QCADesigner GUI screenshots of the conventional TDC |
 | `simulation/` | QCADesigner-E driver, independent solver, results and plots |
-| `coarse_tdc/` | Wide-range coarse counter TDC (4 bits 245 cells, 8 bits 473 cells, 4 ps steps) plus asynchronous coarse + fine capture at 1 ps (`async_tdc4.qca`, 413 cells) |
+| `coarse_tdc/` | Wide-range TDC: coarse counter (4/8 bits), asynchronous fine capture at 1 ps, self-re-arming and two-channel versions, figures |
 | `archive/` | Layouts that don't work, including the proposed TDC (`09_proposed_tdc.qca`) |

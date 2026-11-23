@@ -1,0 +1,5 @@
+cells 738 area_um2 1.3752
+energy 20.00 meV/cycle (error +/- 1.66)
+event 0: s=1 D= 9 Q=13 Q-D=4  count=3 F_S=001 F_P=011 valid@144ps (STOP@122ps) dead=68.1ps
+event 1: s=3 D=22 Q=26 Q-D=4  count=7 F_S=111 F_P=001 valid@280ps (STOP@257ps) dead=69.1ps
+event 2: s=0 D=41 Q=45 Q-D=4  count=11 F_S=000 F_P=001 valid@432ps (STOP@409ps) dead=69.2ps

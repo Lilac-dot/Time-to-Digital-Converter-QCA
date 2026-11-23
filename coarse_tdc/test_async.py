@@ -52,11 +52,17 @@ def stimulus(cases):
 
 def main():
     cases = [tuple(map(int, a.split(","))) for a in sys.argv[1:]] or [(0, 9), (1, 9), (2, 9), (3, 9), (2, 47)]
-    q = os.path.join(HERE, f"async_tdc{NB}.qca")
+    q = os.path.join(HERE, os.environ.get("QCA", f"async_tdc{NB}.qca"))
     L = build(q)
     print("cells", L.count(), "area_um2", round(L.area_um2(), 4))
     names, rows, reads = stimulus(cases)
-    c, e, _ = run_qde(q, names, rows, per_vector=0.25, radius_of_effect=float(os.environ.get("RADIUS", 80)))
+    kw = dict(per_vector=0.25, radius_of_effect=float(os.environ.get("RADIUS", 80)))
+    if "QCA_T" in os.environ:
+        kw["T"] = float(os.environ["QCA_T"])
+    c, e, _ = run_qde(q, names, rows, **kw)
+    if os.environ.get("SAVE"):
+        import numpy as _np
+        _np.savez_compressed(os.environ["SAVE"], **{k: _np.asarray(v, dtype=_np.float32) for k, v in c.items()})
     if e.get("avg_reported_eV"):
         print(f"energy {e['avg_reported_eV']*1e3:.2f} meV/cycle (error +/- {abs(e['avg_error_reported_eV'])*1e3:.2f})")
     for (s, D), i in zip(cases, reads):
