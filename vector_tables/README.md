@@ -35,4 +35,6 @@ pair together. Every vector lasts one clock period, so set
 | Algorithm | Euler |
 
 The expected results were checked headlessly with the coherence-vector engine source from
-QCADesigner-E (`simulation/test_classic.py`), not in the Windows QCADesigner GUI.
+QCADesigner-E (`simulation/test_classic.py`). The conventional TDC (`07_conventional_tdc.vt`)
+has also been run in the Windows QCADesigner GUI and gives the same codes
+(`../screenshots/gui_vector_table.png`).

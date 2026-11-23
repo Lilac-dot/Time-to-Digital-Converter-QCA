@@ -12,5 +12,5 @@ Every file here passes simulation (see `../simulation/RESULTS.md`).
 
 `qca_gen.py` writes the file format, `build_conventional_tdc.py` and `build_mux_fig2c.py`
 generate 07 and 08, and `preview.py` renders a `.qca` to PNG. `01` and `02` come from
-`../archive/build.py`. Generated files have been run in the engine but not yet opened in
-the QCADesigner GUI.
+`../archive/build.py`. All generated files have been run in the engine. `07_conventional_tdc.qca`
+has also been opened and simulated in the QCADesigner GUI (`../screenshots/`).

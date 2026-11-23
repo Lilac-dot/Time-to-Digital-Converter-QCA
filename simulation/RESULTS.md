@@ -1,7 +1,8 @@
 # Results
 
 Numbers come from the **QCADesigner-E** engine source, compiled and run headless on macOS.
-They have not yet been reproduced in the Windows QCADesigner GUI. Raw values are in `results/`.
+The conventional TDC's output codes have also been confirmed in the Windows QCADesigner GUI
+(`../screenshots/`). Raw values are in `results/`.
 
 ## Conventional TDC (paper Fig. 1b)
 
@@ -19,7 +20,7 @@ were inferred from neighbours and the mirrored cell.
 This matches the sequence in the paper's Fig. 7(a), with output polarization of +/-0.953
 (paper: 0.953). One code step per clock period gives 4 ps resolution at a 4 ps clock.
 
-![Waveforms](results/conventional_tdc_waveforms.png)
+![Simulation in the QCADesigner GUI](../screenshots/gui_vector_table.png)
 
 ## Energy per clock cycle, whole circuit (QCADesigner-E)
 
@@ -95,7 +96,8 @@ The traced fault is at the mid-wire delay-line taps: the tap and the latch below
 clock zone 0, so the branch cell is held at -1 while the wire is +1. Possible explanations
 not ruled out: the published figure differing from the simulated file, unstated settings,
 or hidden clock zones on input, output and fixed cells. Run it in the Windows QCADesigner
-GUI (`archive/09_proposed_tdc_fig8.vt`) before calling the paper wrong.
+GUI (`archive/09_proposed_tdc_fig8.vt`) before calling the paper wrong. We emailed the authors
+about the clock zones and have not had a reply.
 
 Because no proposed design works here, **no conventional-vs-proposed saving is claimed**.
 
