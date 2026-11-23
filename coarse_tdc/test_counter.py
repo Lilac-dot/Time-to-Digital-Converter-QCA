@@ -40,6 +40,9 @@ if __name__ == "__main__":
     if eng == "cv":
         kw["engine"] = "cv"
     c, e, _ = run_qde(q, names, rows, **kw)
+    if os.environ.get("SAVE"):
+        import numpy as _np
+        _np.savez_compressed(os.environ["SAVE"], **{k: _np.asarray(v, dtype=_np.float32) for k, v in c.items()})
     if e.get("avg_reported_eV"):
         print(f"energy {e['avg_reported_eV']*1e3:.2f} meV/cycle (error +/- {abs(e['avg_error_reported_eV'])*1e3:.2f})")
     X = {k: per_period(c, f"X{k}", len(en)) for k in range(NB)}

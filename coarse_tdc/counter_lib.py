@@ -26,7 +26,7 @@ def run(L, cells, zones):
         L.add(p[0], p[1], z)
 
 
-def toggle_bit(L, R, C, z, k):
+def toggle_bit(L, R, C, z, k, tag=""):
     """One counter bit around a MUX at (R, C) in zone z (gate zones as in addll_lib.mux).
     Returns dict with the S feed point (cell east of the S line, which must be driven in
     zone p = z-1 or earlier), the carry-out cell and its zone, and the X output cell."""
@@ -34,14 +34,14 @@ def toggle_bit(L, R, C, z, k):
     mux(L, R, C, z)
     # CLR input where the lower AND gate's fixed -1 was
     L.layers[0].pop((R - 5, C - 3), None)
-    L.add(R - 5, C - 3, z, "input", name=f"CLR{k}")
+    L.add(R - 5, C - 3, z, "input", name=f"CLR{k}{tag}")
 
     # loop: OUT (R, C-4) in zone g forks at (R, C-5)
     L.add(R, C - 5, g)
     # I0 branch: north to (R-3, C-5), which is the I0 cell (zone z)
     run(L, [(R - 1, C - 5), (R - 2, C - 5)], [p, p])
     # X probe off the I0 branch
-    L.add(R - 2, C - 6, p, "output", name=f"X{k}")
+    L.add(R - 2, C - 6, p, "output", name=f"X{k}{tag}")
     # I1 branch: south to row R+3 in zone g, then an inverting diagonal step into zone p
     # at (R+4, C-4) (a zone boundary, like the ADDLL's ENB inverter), east along row R+4
     # and a normal corner up column C into the MUX's I1 cells
@@ -76,12 +76,12 @@ def line(a, b):
     return out
 
 
-def counter(L, R, C0, n, z=0, dr=12, dc=2):
+def counter(L, R, C0, n, z=0, dr=12, dc=2, tag=""):
     """n toggle bits stacked downwards, LSB on top. Bit k+1 sits dr rows below and dc
     columns east of bit k, so bit k's carry drops straight down column C+6 into bit k+1's
     S line corner. Returns the bit list."""
     from addll_lib import zones
-    bits = [toggle_bit(L, R + i * dr, C0 + i * dc, z, i) for i in range(n)]
+    bits = [toggle_bit(L, R + i * dr, C0 + i * dc, z, i, tag) for i in range(n)]
     for i in range(n - 1):
         b, nb = bits[i], bits[i + 1]
         r, c = b["carry"]
