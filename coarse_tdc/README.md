@@ -60,15 +60,55 @@ Plus, 2024). This one is about 7% larger. In its favour:
 Logs: `results/`. Without the window gate (EN driven directly), the 4-bit counter also
 counted 5, 11, 15 and 6 exactly.
 
-## Coarse + fine
 
-The full design is `time = 4 * coarse + fine`, with the existing thermometer TDC
-(`qca-layouts/07_conventional_tdc.qca`) as the fine stage. **In QCADesigner this gains
-nothing:** vector-table inputs can only change on clock-period boundaries, so every
-START-STOP interval is a whole number of periods, and the counter already resolves those.
-A fine stage only pays off if START/STOP arrive asynchronously. For example, a detector
-edge sampled by the delay line's clock-zone taps could resolve a quarter period. That
-can't be shown in this simulator.
+## Asynchronous capture (coarse + fine)
+
+`fine_lib.py` adds the fine stage, so START and STOP no longer have to land on clock
+edges. Resolution goes from one period (4 ps) to one clock zone (a quarter period, 1 ps).
+
+**How it works, per edge:**
+- The input is sampled in the window's reference zone (zone 0 for START, zone 3 for STOP)
+  and also m = 1, 2, 3 quarters earlier.
+- A gate forms `f_m = X_ref . !X_early`. It is 1 only in the first period the reference
+  sample sees the edge, and only if the edge came within the last m quarters.
+- A one-gate set-latch, `q' = M(q, f, CLRn)` in a one-period loop (13 cells), holds each
+  `f_m`. The held bits `F1..F3` form a thermometer code.
+
+**Result, in quarter periods:** `Q = 4*count + sum(F_P) - sum(F_S) + 1`. The +1 is a fixed
+offset: the window samples STOP one zone after START.
+
+**Testing it:** the classic engine ties one input vector to one clock period, so it can't
+place an edge mid-period. The Gaussian-clock energy engine has a separate input period.
+With `per_vector=0.25` the inputs change every quarter period, and `test_async.py` steps
+START at each of the 4 quarter phases.
+
+| `async_tdc4.qca`: 413 cells, 0.77 um^2 | r = 80 nm | r = 65 nm |
+|---|---|---|
+| START at quarters 0, 1, 2, 3 with D = 9 | Q - D = 1 for all four | Q - D = 1 for all four |
+| (s, D) = (2, 47) and (1, 30) | Q - D = 1 for both | Q - D = 1 for both |
+| Energy (Gaussian clock) | 11.40 meV per cycle (error +/- 0.98) | |
+
+The first version placed the fine blocks further out and used 3-cell zone segments on the
+early-sample wires: 425 cells, 0.93 um^2, 11.60 meV per cycle, same results. Cutting the
+segments to 2 cells works; 1-cell segments do not (the thermometer collapses).
+
+**Caveats:**
+- Each sampler has its own input cell (`START_R1`, `START_E1`, ...). This models one pad
+  fanned out to the samplers; the fan-out wiring is not in the cell count. The test bench
+  drives them together, and the GUI vector table would need them set together too.
+- **No GUI test:** QCADesigner 2.0.3 can't run this test, because its classic engine ties
+  inputs to the clock. Only the QCADesigner-E energy engine, with an input period of a
+  quarter clock period, can.
+- **Metastability isn't modelled.** An edge that lands exactly while a sampler is switching
+  is resolved by the engine's deterministic maths, not by noise.
+
+## Why not the delay-line TDC as the fine stage
+
+With clock-aligned inputs, the repo's thermometer TDC
+(`qca-layouts/07_conventional_tdc.qca`) adds nothing on top of the counter: every interval
+is a whole number of periods, and the counter already resolves those. Asynchronous capture
+above replaces it as the fine stage. It samples zone by zone instead of stage by stage, so
+it gets quarter-period resolution in 84 cells per edge.
 
 ## Why: medical imaging
 
@@ -109,4 +149,7 @@ simulation-only; nobody fabricates QCA circuits at this scale.
 | `counter_lib.py` | Toggle bit, counter chain, START/STOP window |
 | `test_bit.py` | One bit: clear, count, carry pulses |
 | `test_counter.py` | n-bit coarse TDC (`NB=8`, `ENGINE=gauss` and `WAIT=` via env) |
+| `fine_lib.py` | Fine stage: samplers, f gate, set-latch, `async_tdc()` |
+| `test_fine.py` | One edge's fine stage, edge swept over 4 quarter phases |
+| `test_async.py` | Full coarse + fine TDC with asynchronous edges |
 | `make_gui.py` | Writes the layouts and the GUI vector table (needs `../simulation/qde_driver`) |

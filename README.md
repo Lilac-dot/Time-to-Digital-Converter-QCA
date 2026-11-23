@@ -21,5 +21,5 @@ Clock-high, temperature and clock-shape sweeps, block-level energies, and why th
 | `qca-layouts/` | Other working blocks: majority gate, wire + inverter, 2:1 MUX (Fig. 2c), D-latch |
 | `vector_tables/` | Vector tables and steps for running them in QCADesigner |
 | `simulation/` | QCADesigner-E driver, independent solver, results and plots |
-| `coarse_tdc/` | Wide-range coarse counter TDC: 4 bits (0-60 ps, 245 cells) and 8 bits (0-1.02 ns, 473 cells) at 4 ps resolution, single layer |
+| `coarse_tdc/` | Wide-range coarse counter TDC (4 bits 245 cells, 8 bits 473 cells, 4 ps steps) plus asynchronous coarse + fine capture at 1 ps (`async_tdc4.qca`, 413 cells) |
 | `archive/` | Layouts that don't work, including the proposed TDC (`09_proposed_tdc.qca`) |
