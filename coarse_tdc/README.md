@@ -224,6 +224,33 @@ detectors.
 | 256 ps (60% along) | − + + − | 1001 | 9 |
 | 420 ps (98% along) | − − − + | 1110 | 14 |
 
+## Running the asynchronous TDC in QCADesigner-E
+
+`gui_test/async_tdc4.qca` with `gui_test/async_tdc4_test.vt` (298 vectors, 1 ps each): D = 9
+quarters with START at each of the four clock phases, the same stimulus as `test_async.py`.
+It needs QCADesigner-E's **Coherence Vector (w/ Energy)** engine, because each vector lasts a
+quarter clock period. In QCADesigner 2.0.3 every vector lasts a full period and the fine bits
+won't match. Not yet run from this file in a GUI.
+
+| Option | Value |
+|---|---|
+| Clock period / **input period** | 4e-12 s / **1e-12 s** |
+| **Total simulation time** | **2.98e-10 s** (298 × 1 ps) |
+| Clock type | Gaussian, slope 1e-12 s |
+| Radius of effect | 80 nm |
+| Everything else | as in `../vector_tables/README.md` |
+
+Read near the end of each block. X is 1 when negative, FS and FP are 1 when positive.
+
+| START phase | Read near | Count (X3..X0) | FS1 FS2 FS3 | FP1 FP2 FP3 | Q |
+|---|---|---|---|---|---|
+| 0 | 72 ps (24%) | 2 (0010) | 000 | 011 | 10 |
+| 1 | 146 ps (49%) | 3 (0011) | 011 | 000 | 10 |
+| 2 | 221 ps (74%) | 2 (0010) | 001 | 111 | 10 |
+| 3 | 297 ps (end) | 3 (0011) | 111 | 001 | 10 |
+
+Q = 4·count + ΣF_P − ΣF_S = 10 in every case, so D = Q − 1 = 9.
+
 ## Files
 
 | File | What |
