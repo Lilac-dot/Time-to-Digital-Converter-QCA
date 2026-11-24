@@ -67,8 +67,8 @@ places each edge to within one clock zone, a quarter period (1 ps).
   sample sees the edge, and only if the edge came within the last m quarters.
 - **Set-latch:** `q' = M(q, f, CLRn)` in a one-period loop (13 cells) holds each `f_m`.
   `F1..F3` form a thermometer code.
-- **Result, in quarter periods:** `Q = 4*count + sum(F_P) - sum(F_S) + 1`. The +1 is fixed:
-  the window samples STOP one zone after START.
+- **Result, in quarter periods:** `Q = 4*count + sum(F_P) - sum(F_S)` reads `D + 1`. The +1
+  is fixed: the window samples STOP one zone after START, so `D = Q - 1`.
 
 ![Asynchronous capture waveforms](figures/waves_async4.png)
 
